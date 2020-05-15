@@ -227,7 +227,7 @@ func (c *conn) serveRead() {
 				err error
 			)
 			if event == "ping" {
-				ret, err = handler.dispatch(conn, header, event, []reflect.Value{reflect.ValueOf("ping")})
+				ret, err = handler.dispatch(conn, header, event, nil)
 			} else {
 				types := handler.getTypes(header, event)
 				args, err := c.decoder.DecodeArgs(types)
