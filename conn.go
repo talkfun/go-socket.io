@@ -235,7 +235,7 @@ func (c *conn) serveRead() {
 					c.onError(header.Namespace, err)
 					return
 				}
-				ret, err := handler.dispatch(conn, header, event, args)
+				ret, err = handler.dispatch(conn, header, event, args)
 			}
 			if err != nil {
 				c.onError(header.Namespace, err)
