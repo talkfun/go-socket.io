@@ -8,9 +8,9 @@ import (
 	"reflect"
 	"sync"
 
-	engineio "github.com/googollee/go-engine.io"
+	engineio "github.com/talkfun/go-engine.io"
 
-	"github.com/googollee/go-socket.io/parser"
+	"github.com/talkfun/go-socket.io/parser"
 )
 
 // Conn is a connection in go-socket.io
@@ -222,13 +222,21 @@ func (c *conn) serveRead() {
 				c.decoder.DiscardLast()
 				continue
 			}
-			types := handler.getTypes(header, event)
-			args, err := c.decoder.DecodeArgs(types)
-			if err != nil {
-				c.onError(header.Namespace, err)
-				return
+			var (
+				ret []reflect.Value
+				err error
+			)
+			if event == "ping" {
+				ret, err = handler.dispatch(conn, header, event, []reflect.Value{reflect.ValueOf("ping")})
+			} else {
+				types := handler.getTypes(header, event)
+				args, err = c.decoder.DecodeArgs(types)
+				if err != nil {
+					c.onError(header.Namespace, err)
+					return
+				}
+				ret, err := handler.dispatch(conn, header, event, args)
 			}
-			ret, err := handler.dispatch(conn, header, event, args)
 			if err != nil {
 				c.onError(header.Namespace, err)
 				return

@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"strings"
 
-	engineio "github.com/googollee/go-engine.io"
+	engineio "github.com/talkfun/go-engine.io"
 )
 
 type FrameReader interface {
@@ -58,6 +58,12 @@ func (d *Decoder) DecodeHeader(header *Header, event *string) error {
 	ft, r, err := d.r.NextReader()
 	if err != nil {
 		return err
+	}
+	if ft == engineio.PING {
+		header.Type = Event
+		header.Namespace = "/"
+		*event = "ping"
+		return nil
 	}
 	if ft != engineio.TEXT {
 		return errors.New("first packet should be TEXT frame")

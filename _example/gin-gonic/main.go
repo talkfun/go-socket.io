@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	socketio "github.com/googollee/go-socket.io"
+	socketio "github.com/talkfun/go-socket.io"
 )
 
 func main() {
