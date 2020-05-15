@@ -230,7 +230,7 @@ func (c *conn) serveRead() {
 				ret, err = handler.dispatch(conn, header, event, []reflect.Value{reflect.ValueOf("ping")})
 			} else {
 				types := handler.getTypes(header, event)
-				args, err = c.decoder.DecodeArgs(types)
+				args, err := c.decoder.DecodeArgs(types)
 				if err != nil {
 					c.onError(header.Namespace, err)
 					return
